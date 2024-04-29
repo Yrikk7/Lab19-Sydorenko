@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game</title>
+    <style>                                       
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            background-size: cover;
+        }
+
+        .piece {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border: 1px solid #000;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>        
+    <table id='sas'>          
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table> <br>
+    <div id="sos"></div><br>
+    <input type="button" value="Почати гру спочатку" onclick="window.location.href = 'Sydorenko_19-2.html'" >
+    <script>     
+        const images = [
+            'AnyConv.com__n1.jpg',
+            'AnyConv.com__n2.jpg',
+            'AnyConv.com__n3.jpg',
+            'AnyConv.com__n4.jpg',
+            'AnyConv.com__n5.jpg',
+            'AnyConv.com__n6.jpg',
+            'AnyConv.com__n7.jpg',
+            'AnyConv.com__n8.jpg',
+            'AnyConv.com__n9.jpg',
+            'AnyConv.com__n10.jpg',
+            'AnyConv.com__r1.jpg',
+            'AnyConv.com__r2.jpg',
+            'AnyConv.com__r3.jpg',
+            'AnyConv.com__r4.jpg',
+            'AnyConv.com__r5.jpg',
+            'AnyConv.com__r6.jpg',
+            'AnyConv.com__r7.jpg',
+            'AnyConv.com__r8.jpg',
+            'AnyConv.com__r9.jpg',
+            'AnyConv.com__r10.jpg',
+            'AnyConv.com__z1.jpg',
+            'AnyConv.com__z2.jpg',
+            'AnyConv.com__z3.jpg',
+            'AnyConv.com__z4.jpg',
+            'AnyConv.com__z5.jpg',
+            'AnyConv.com__z6.jpg',
+            'AnyConv.com__z7.jpg',
+            'AnyConv.com__z8.jpg',
+            'AnyConv.com__z9.jpg',
+            'AnyConv.com__z10.jpg',
+        ];
+        const Ngers = document.querySelectorAll('#sas td');
+        const dive = document.getElementById('sos');
+
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.id);
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        restartGame()
+
+        function restartGame() {
+            randomImage();
+            var image2 = [];
+            Ngers.forEach(Nger => {
+                // Випадково вибрати посилання на зображення з масиву
+                const randomIndex = Math.floor(Math.random() * images.length);
+                const randomImage = images[randomIndex];
+                // Встановити випадкове зображення як фон для клітинки
+                Nger.style.backgroundImage = `url('${randomImage}')`;
+                Nger.addEventListener('dragover', dragOver);
+                Nger.addEventListener('drop', function(event) {
+                    event.preventDefault();
+                    const data = event.dataTransfer.getData('text/plain');
+                    const draggedPiece = document.getElementById(data);
+                    if (draggedPiece.style.backgroundImage === dive.style.backgroundImage) {
+                        alert('Картинка зівпала');
+                        restartGame();
+                    } else {
+                        alert('Картинка не зівпала, спробуй ще раз');
+                    }
+                });
+                image2.push(Nger.style.backgroundImage);           
+            });  
+        }
+
+        function randomImage(){            
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const randomImage = images[randomIndex];
+            // Встановити випадкове зображення як фон для клітинки
+            dive.style.backgroundImage = `url('${randomImage}')`;
+            dive.classList.add('piece');
+            dive.addEventListener('dragstart', dragStart);
+        }     
+    </script>
+</body>  
+</html>

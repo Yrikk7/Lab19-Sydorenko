@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Игра "Перетащи картинку"</title>
+<style>
+  #game-container {
+    display: grid;
+    grid-template-columns: repeat(5, 100px);
+    grid-template-rows: repeat(5, 100px);
+    gap: 5px;
+  }
+  .piece {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  #current-image {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #000;
+    box-sizing: border-box;
+  }
+</style>
+</head>
+<body>
+
+<div id="game-container"></div>
+<div id="current-image"></div>
+<button onclick="restartGame()">Почати з початку</button>
+
+<script>
+// Получаем контейнеры для игры и текущей картинки
+const gameContainer = document.getElementById('game-container');
+const currentImage = document.getElementById('current-image');
+
+// Генерируем игровое поле
+generateGameField();
+
+// Функция для генерации игрового поля
+function generateGameField() {
+  for (let i = 0; i < 25; i++) {
+    const piece = document.createElement('div');
+    piece.classList.add('piece');
+    piece.draggable = true;
+    piece.addEventListener('dragstart', dragStart);
+    gameContainer.appendChild(piece);
+  }
+
+  // Генерируем случайную картинку для области текущей картинки
+  loadRandomImage();
+}
+
+// Функция для загрузки случайной картинки в текущую область
+function loadRandomImage() {
+  const images = [ 'AnyConv.com__n1.jpg',
+        'AnyConv.com__n2.jpg',
+        'AnyConv.com__n3.jpg',
+        'AnyConv.com__n4.jpg',
+        'AnyConv.com__n5.jpg',
+        'AnyConv.com__n6.jpg',
+        'AnyConv.com__n7.jpg',
+        'AnyConv.com__n8.jpg',]; // Замените на свои файлы изображений
+  const randomIndex = Math.floor(Math.random() * images.length);
+  currentImage.style.backgroundImage = `url(${images[randomIndex]})`;
+}
+
+// Функция для перезапуска игры
+function restartGame() {
+  gameContainer.innerHTML = ''; // Очищаем игровое поле
+  generateGameField(); // Генерируем новое игровое поле
+}
+
+// Функция начала перетаскивания кусочка пазла
+function dragStart(event) {
+  event.dataTransfer.setData('text/plain', event.target.id);
+}
+
+// Функция для обработки события бросания кусочка пазла
+gameContainer.addEventListener('drop', drop);
+function drop(event) {
+  event.preventDefault();
+  const data = event.dataTransfer.getData('text/plain');
+  const draggedPiece = document.getElementById(data);
+  if (draggedPiece.style.backgroundImage === currentImage.style.backgroundImage) {
+    alert('Поздравляем! Картинка совпала!');
+    restartGame();
+  } else {
+    alert('Не верная картика, попробуйте еще раз');
+  }
+}
+</script>
+
+</body>
+</html>

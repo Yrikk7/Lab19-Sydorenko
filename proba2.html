@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag and Drop Example</title>
+<style>
+  #source {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #ccc;
+    margin-bottom: 10px;
+  }
+  #target {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed #aaa;
+    padding: 10px;
+  }
+  #target p {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<div id="source" draggable="true" ondragstart="drag(event)">
+  <img src="AnyConv.com__n10.jpg" alt="Source Image">
+</div>
+
+<div id="target" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <p>Drop Here</p>
+</div>
+
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  var draggedElement = document.getElementById(data);
+  ev.target.appendChild(draggedElement);
+}
+</script>
+
+</body>
+</html>
